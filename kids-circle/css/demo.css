@@ -1,0 +1,711 @@
+/* =========================================================
+   圆的乐园 · 演示模块样式（css/demo.css）
+   模块前缀：dm-
+   ========================================================= */
+
+/* ---------------- 演示选择器 ---------------- */
+.dm-tabs {
+  display: flex;
+  flex-wrap: wrap;
+  width: 100%;
+  gap: 4px;
+  padding: 5px;
+  margin-bottom: 18px;
+  border-radius: 22px;
+}
+
+.dm-tabs .dm-tab {
+  flex: 1 1 auto;
+  display: inline-flex;
+  align-items: center;
+  justify-content: center;
+  gap: 7px;
+  min-height: 42px;
+  padding: 9px 16px;
+  border: 0;
+  border-radius: 999px;
+  background: transparent;
+  color: #5b6b82;
+  font-size: 13.5px;
+  font-weight: 700;
+  transition: background 0.2s, color 0.2s, box-shadow 0.2s, transform 0.18s;
+}
+
+.dm-tabs .dm-tab:hover {
+  color: var(--blue);
+  transform: translateY(-1px);
+}
+
+.dm-tabs .dm-tab.active {
+  background: #fff;
+  color: var(--blue);
+  box-shadow: 0 8px 18px -12px rgba(37, 99, 235, 0.9);
+}
+
+.dm-tab-ico {
+  font-size: 15px;
+  line-height: 1;
+}
+
+/* ---------------- 演示布局 ---------------- */
+.dm-stages {
+  display: block;
+}
+
+.dm-demo {
+  display: none;
+}
+
+.dm-demo.active {
+  display: grid;
+  grid-template-columns: minmax(0, 1.55fr) minmax(0, 1fr);
+  gap: 16px;
+  align-items: start;
+  animation: dm-in 0.38s cubic-bezier(0.22, 0.85, 0.3, 1);
+}
+
+@keyframes dm-in {
+  from { opacity: 0; transform: translateY(10px); }
+  to { opacity: 1; transform: none; }
+}
+
+.dm-main {
+  min-width: 0;
+}
+
+.dm-side {
+  display: flex;
+  flex-direction: column;
+  gap: 14px;
+  min-width: 0;
+}
+
+/* ---------------- 舞台 ---------------- */
+.dm-stage {
+  position: relative;
+  isolation: isolate;
+  overflow: hidden;
+  aspect-ratio: 800 / 460;
+  border: 1px solid var(--line);
+  border-radius: 20px;
+  background:
+    radial-gradient(120% 110% at 50% -10%, #ffffff 0%, #f7fbff 55%, #eef5ff 100%);
+}
+
+.dm-stage::before {
+  content: "";
+  position: absolute;
+  inset: 0;
+  z-index: 0;
+  background-image: radial-gradient(rgba(147, 197, 253, 0.42) 1px, transparent 1.3px);
+  background-size: 26px 26px;
+  opacity: 0.62;
+  pointer-events: none;
+}
+
+.dm-svg {
+  position: relative;
+  z-index: 1;
+}
+
+/* ---------------- SVG 通用文字 ---------------- */
+.dm-svg text {
+  font-family: var(--font);
+}
+
+.dm-halo {
+  paint-order: stroke;
+  stroke: #fff;
+  stroke-width: 7px;
+  stroke-linejoin: round;
+}
+
+.dm-top-label {
+  font-size: 20px;
+  font-weight: 700;
+  fill: #475569;
+}
+
+.dm-bottom-label {
+  font-size: 18px;
+  font-weight: 600;
+  fill: var(--muted);
+}
+
+.dm-o-label {
+  font-size: 18px;
+  font-weight: 800;
+  fill: var(--ink);
+}
+
+.dm-radius-label {
+  font-size: 18px;
+  font-weight: 700;
+  fill: var(--blue-dark);
+}
+
+.dm-angle-label {
+  font-size: 20px;
+  font-weight: 800;
+  fill: var(--amber-dark);
+}
+
+.dm-arc-label {
+  font-size: 18px;
+  font-weight: 700;
+  fill: #7c3aed;
+}
+
+.dm-amber-text {
+  fill: var(--amber-dark);
+}
+
+.dm-green-label {
+  font-size: 20px;
+  font-weight: 800;
+  fill: var(--green-dark);
+}
+
+.dm-pink-label {
+  font-size: 20px;
+  font-weight: 800;
+  fill: #be185d;
+}
+
+/* ---------------- 演示 1：圆的形成 ---------------- */
+.dm-ghost {
+  fill: #f8fbff;
+  stroke: #c7d2fe;
+  stroke-width: 2.5;
+  stroke-dasharray: 10 10;
+}
+
+.dm-trail {
+  fill: none;
+  stroke: var(--purple);
+  stroke-width: 8;
+  stroke-linecap: round;
+}
+
+.dm-angle-arc {
+  fill: none;
+  stroke: var(--amber);
+  stroke-width: 3.5;
+  stroke-linecap: round;
+  opacity: 0.92;
+}
+
+.dm-radius-line {
+  stroke: var(--blue);
+  stroke-width: 5;
+  stroke-linecap: round;
+}
+
+.dm-center-dot {
+  fill: var(--ink);
+}
+
+.dm-point {
+  fill: var(--blue);
+  stroke: #fff;
+  stroke-width: 3.5;
+}
+
+.dm-point-pulse {
+  fill: none;
+  stroke: var(--blue);
+  stroke-width: 2;
+  opacity: 0.35;
+  transform-box: fill-box;
+  transform-origin: center;
+  animation: dm-point-pulse 1.8s ease-out infinite;
+}
+
+@keyframes dm-point-pulse {
+  0% { transform: scale(0.55); opacity: 0.55; }
+  70% { transform: scale(1.3); opacity: 0; }
+  100% { transform: scale(1.3); opacity: 0; }
+}
+
+/* ---------------- 演示 2：滚动法 ---------------- */
+.dm-ruler-bg {
+  fill: #ffffff;
+  stroke: #cfe0f7;
+  stroke-width: 2;
+}
+
+.dm-ruler-top {
+  fill: #e8f2ff;
+}
+
+.dm-tick {
+  stroke: #94a3b8;
+  stroke-width: 2.5;
+  stroke-linecap: round;
+}
+
+.dm-tick-major {
+  stroke: #64748b;
+  stroke-width: 3;
+}
+
+.dm-ruler-num {
+  font-size: 15px;
+  font-weight: 700;
+  fill: #64748b;
+}
+
+.dm-ruler-unit {
+  font-size: 15px;
+  font-weight: 700;
+  fill: #94a3b8;
+}
+
+.dm-start-line {
+  stroke: #cbd5e1;
+  stroke-width: 2.5;
+  stroke-dasharray: 7 8;
+}
+
+.dm-roll-track {
+  stroke: var(--purple);
+  stroke-width: 9;
+  stroke-linecap: round;
+  opacity: 0.95;
+}
+
+.dm-bracket {
+  transition: opacity 0.2s;
+}
+
+.dm-bracket-line {
+  stroke: var(--purple);
+  stroke-width: 2.5;
+  stroke-dasharray: 7 7;
+}
+
+.dm-bracket-tick {
+  stroke: var(--purple);
+  stroke-width: 3;
+  stroke-linecap: round;
+}
+
+.dm-bracket-label {
+  font-size: 21px;
+  font-weight: 800;
+  fill: #7c3aed;
+  transition: opacity 0.2s;
+}
+
+.dm-roll-circle {
+  fill: #eef5ff;
+  stroke: var(--purple);
+  stroke-width: 5;
+}
+
+.dm-roll-dia {
+  stroke: var(--amber);
+  stroke-width: 5;
+  stroke-linecap: round;
+}
+
+.dm-roll-dot {
+  fill: var(--amber);
+}
+
+.dm-roll-spot {
+  fill: var(--pink);
+  stroke: #fff;
+  stroke-width: 3;
+}
+
+.dm-roll-hub {
+  fill: var(--ink);
+}
+
+/* ---------------- 演示 3：剪拼法 ---------------- */
+.dm-sector {
+  stroke: rgba(255, 255, 255, 0.95);
+  stroke-width: 2;
+}
+
+.dm-sector.even {
+  fill: #c4b5fd;
+}
+
+.dm-sector.odd {
+  fill: #7dd3fc;
+}
+
+.dm-area-guide,
+.dm-area-dims {
+  transition: opacity 0.2s;
+}
+
+.dm-dim-line {
+  stroke: #8b5cf6;
+  stroke-width: 2.5;
+}
+
+.dm-dim-arrow {
+  fill: #8b5cf6;
+}
+
+.dm-dim-label {
+  font-size: 19px;
+  font-weight: 800;
+}
+
+.dm-dim-len {
+  fill: #6d28d9;
+}
+
+.dm-dim-wid {
+  fill: var(--blue-dark);
+  font-size: 17px;
+}
+
+/* ---------------- 演示 4：扇形 ---------------- */
+.dm-sec-circle {
+  fill: #f8fbff;
+  stroke: #dbeafe;
+  stroke-width: 2.5;
+}
+
+.dm-sec-fill {
+  fill: rgba(139, 92, 246, 0.25);
+}
+
+.dm-sec-arc {
+  fill: none;
+  stroke: var(--purple);
+  stroke-width: 9;
+  stroke-linecap: round;
+}
+
+/* ---------------- 演示 5：阴影面积 ---------------- */
+.dm-ring-disk {
+  fill: #fbcfe8;
+  filter: drop-shadow(0 12px 18px rgba(236, 72, 153, 0.18));
+}
+
+.dm-ring-outline {
+  fill: none;
+  stroke: var(--pink);
+  stroke-width: 4;
+}
+
+.dm-ring-inner {
+  fill: none;
+  stroke: var(--pink);
+  stroke-width: 3;
+  stroke-dasharray: 9 7;
+}
+
+.dm-sq-fill {
+  fill: #fbcfe8;
+}
+
+.dm-sq-outline {
+  fill: none;
+  stroke: #be185d;
+  stroke-width: 3;
+}
+
+.dm-sq-circle {
+  fill: none;
+  stroke: var(--green);
+  stroke-width: 5;
+}
+
+/* ---------------- 讲解卡 ---------------- */
+.dm-narr {
+  background: linear-gradient(160deg, #ffffff, #fffdf7);
+}
+
+.dm-narr-head {
+  display: flex;
+  align-items: center;
+  gap: 12px;
+  margin-bottom: 12px;
+}
+
+.dm-narr-avatar {
+  flex: none;
+  display: grid;
+  place-items: center;
+  width: 46px;
+  height: 46px;
+  border-radius: 16px;
+  font-size: 23px;
+  background: linear-gradient(145deg, #fff7e0, #fde68a);
+  box-shadow: inset 0 0 0 1px #fff, 0 10px 20px -14px rgba(245, 158, 11, 0.9);
+}
+
+.dm-narr-head h3 {
+  font-size: 16px;
+  color: var(--ink-strong);
+}
+
+.dm-narr-head .cl-card-sub {
+  margin-top: 2px;
+}
+
+.dm-narr-text {
+  min-height: 5.4em;
+  font-size: 14px;
+  line-height: 1.9;
+  color: #3b4a63;
+}
+
+.dm-narr-text b {
+  color: var(--blue-dark);
+}
+
+.dm-formula-slot {
+  display: flex;
+  flex-direction: column;
+  gap: 8px;
+  margin-top: 12px;
+}
+
+.dm-formula-slot .cl-formula {
+  display: block;
+  width: 100%;
+  padding: 8px 12px;
+  font-size: 13.5px;
+  line-height: 1.7;
+  text-align: center;
+}
+
+.dm-data .cl-section-title {
+  margin-top: 0;
+}
+
+.dm-data .cl-stat-grid {
+  grid-template-columns: repeat(2, minmax(0, 1fr));
+}
+
+.dm-data .cl-stat {
+  padding: 10px 8px;
+  border-radius: 14px;
+}
+
+.dm-data .stat-value {
+  font-size: 17px;
+}
+
+.dm-data .cl-stat.dm-stat-wide {
+  grid-column: 1 / -1;
+}
+
+.dm-progress-top {
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
+  gap: 8px;
+  margin: 14px 0 6px;
+  font-size: 12px;
+  font-weight: 700;
+  color: var(--muted);
+}
+
+.dm-progress-top b {
+  color: var(--blue-dark);
+  font-variant-numeric: tabular-nums;
+}
+
+/* ---------------- 控制条 ---------------- */
+.dm-controls {
+  display: flex;
+  flex-direction: column;
+  gap: 12px;
+  margin-top: 14px;
+}
+
+.dm-field {
+  margin: 0;
+}
+
+.dm-btn-row {
+  display: flex;
+  flex-wrap: wrap;
+  gap: 10px;
+  align-items: center;
+}
+
+.dm-btn-row .cl-btn {
+  min-height: 42px;
+}
+
+.dm-play.is-playing {
+  background: linear-gradient(140deg, #fbbf24, #f59e0b);
+  color: #6b3a00;
+  box-shadow: 0 14px 26px -16px rgba(245, 158, 11, 0.9);
+}
+
+.dm-play-ico {
+  font-size: 12px;
+  line-height: 1;
+}
+
+.dm-opt-row {
+  display: flex;
+  align-items: center;
+  gap: 10px;
+  flex-wrap: wrap;
+}
+
+.dm-opt-label {
+  font-size: 12.5px;
+  font-weight: 700;
+  color: var(--muted);
+}
+
+.dm-seg button,
+.dm-subseg button {
+  min-height: 40px;
+}
+
+.dm-quick {
+  display: flex;
+  align-items: center;
+  gap: 8px;
+  flex-wrap: wrap;
+}
+
+.dm-quick .cl-btn {
+  min-height: 40px;
+  padding: 8px 16px;
+}
+
+.dm-quick .cl-btn.active {
+  color: var(--blue);
+  border-color: #c7dcff;
+  background: var(--blue-soft);
+}
+
+/* ---------------- 结论浮条 ---------------- */
+.dm-flash {
+  position: absolute;
+  left: 50%;
+  top: 12px;
+  z-index: 2;
+  max-width: 92%;
+  padding: 9px 18px;
+  border: 1.5px solid #a7ebd1;
+  border-radius: 999px;
+  background: rgba(255, 255, 255, 0.97);
+  box-shadow: var(--shadow-md);
+  color: var(--green-dark);
+  font-size: 14px;
+  font-weight: 800;
+  white-space: nowrap;
+  opacity: 0;
+  transform: translate(-50%, -8px);
+  transition: opacity 0.3s, transform 0.3s;
+  pointer-events: none;
+}
+
+.dm-flash b {
+  color: var(--blue-dark);
+  font-size: 15px;
+}
+
+.dm-flash.show {
+  opacity: 1;
+  transform: translate(-50%, 0);
+}
+
+/* ---------------- 阴影图形切换 ---------------- */
+.dm-subbar {
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
+  gap: 10px;
+  flex-wrap: wrap;
+  margin-bottom: 12px;
+}
+
+.dm-subhint {
+  font-size: 12px;
+  font-weight: 600;
+  color: var(--muted);
+}
+
+/* ---------------- 响应式 ---------------- */
+@media (max-width: 980px) {
+  .dm-demo.active {
+    grid-template-columns: minmax(0, 1fr);
+  }
+
+  .dm-side {
+    order: 2;
+  }
+}
+
+@media (max-width: 640px) {
+  .dm-tabs {
+    border-radius: 18px;
+    margin-bottom: 14px;
+  }
+
+  .dm-tabs .dm-tab {
+    flex: 1 1 30%;
+    gap: 5px;
+    padding: 9px 8px;
+    font-size: 12px;
+  }
+
+  .dm-tab-ico {
+    font-size: 14px;
+  }
+
+  .dm-stage {
+    border-radius: 16px;
+  }
+
+  .dm-narr-text {
+    min-height: 0;
+    font-size: 13.5px;
+  }
+
+  .dm-data .cl-stat-grid {
+    grid-template-columns: repeat(2, minmax(0, 1fr));
+  }
+
+  .dm-btn-row .cl-btn {
+    flex: 1 1 auto;
+  }
+
+  .dm-quick {
+    gap: 6px;
+  }
+
+  .dm-quick .dm-opt-label {
+    flex: 1 1 100%;
+    margin-bottom: 2px;
+  }
+
+  .dm-quick .cl-btn {
+    flex: 1 1 auto;
+    min-height: 40px;
+    padding: 8px 8px;
+    font-size: 12px;
+  }
+
+  .dm-flash {
+    padding: 8px 12px;
+    font-size: 12.5px;
+    text-align: center;
+    white-space: normal;
+  }
+
+  .dm-flash b {
+    font-size: 13.5px;
+  }
+
+  .dm-subbar {
+    margin-bottom: 10px;
+  }
+}

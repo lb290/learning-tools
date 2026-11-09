@@ -1,0 +1,566 @@
+/* =========================================================
+   圆的乐园 · 操作模块样式（lab.css）
+   ---------------------------------------------------------
+   命名前缀：lb-
+   依赖公共层 css/style.css 的 .cl-* 组件与 CSS 变量。
+   ========================================================= */
+
+/* ---------------- 实验台切换条 ---------------- */
+.lb-tabs {
+  display: flex;
+  gap: 6px;
+  padding: 6px;
+  margin: 0 0 16px;
+  border-radius: 999px;
+  background: linear-gradient(180deg, #eef4ff, #e9f1ff);
+  border: 1px solid #e0ebfb;
+  box-shadow: inset 0 1px 3px rgba(30, 64, 175, 0.05);
+  overflow-x: auto;
+  scrollbar-width: none;
+  -webkit-overflow-scrolling: touch;
+}
+.lb-tabs::-webkit-scrollbar { display: none; }
+
+.lb-tab {
+  flex: 1 0 auto;
+  display: inline-flex;
+  align-items: center;
+  justify-content: center;
+  gap: 7px;
+  min-height: 44px;
+  padding: 10px 16px;
+  border: 0;
+  border-radius: 999px;
+  background: transparent;
+  color: #5b6b82;
+  font-size: 13.5px;
+  font-weight: 700;
+  white-space: nowrap;
+  transition: background 0.22s, color 0.22s, box-shadow 0.22s, transform 0.16s;
+}
+.lb-tab:hover { color: var(--blue); transform: translateY(-1px); }
+.lb-tab.active {
+  background: #fff;
+  color: var(--blue);
+  box-shadow: 0 10px 20px -14px rgba(37, 99, 235, 0.95);
+}
+.lb-tab-icon { font-size: 16px; line-height: 1; }
+
+/* ---------------- 实验台卡片 ---------------- */
+.lb-panels { position: relative; }
+
+.lb-panel { padding: clamp(16px, 2.2vw, 26px); }
+.lb-panel.lb-in { animation: lb-panel-in 0.34s cubic-bezier(0.22, 0.85, 0.3, 1); }
+
+@keyframes lb-panel-in {
+  from { transform: translateY(10px); }
+  to { transform: translateY(0); }
+}
+
+.lb-head { align-items: flex-start; margin-bottom: 16px; }
+.lb-head-main { min-width: 0; }
+
+.lb-head h3 { font-size: 18px; }
+.lb-head-icon {
+  display: inline-grid;
+  place-items: center;
+  width: 34px;
+  height: 34px;
+  margin-right: 2px;
+  border-radius: 12px;
+  font-size: 17px;
+  background: linear-gradient(150deg, #eff6ff, #dbeafe);
+  box-shadow: inset 0 0 0 1px #fff, 0 8px 14px -10px rgba(37, 99, 235, 0.85);
+  vertical-align: middle;
+}
+
+/* ---------------- 两栏布局 ---------------- */
+.lb-body {
+  display: grid;
+  grid-template-columns: minmax(0, 340px) minmax(0, 1fr);
+  gap: clamp(16px, 2.4vw, 26px);
+  align-items: start;
+}
+.lb-controls {
+  display: flex;
+  flex-direction: column;
+  gap: 14px;
+  min-width: 0;
+}
+.lb-stage { min-width: 0; }
+
+.lb-below {
+  margin-top: clamp(16px, 2.4vw, 24px);
+  display: flex;
+  flex-direction: column;
+  gap: 14px;
+}
+.lb-below .lb-stats { margin: 0; }
+
+/* ---------------- 滑块 + 数值输入 ---------------- */
+.lb-field {
+  padding: 12px 14px;
+  border-radius: 16px;
+  background: linear-gradient(170deg, #fbfdff, #f2f8ff);
+  border: 1px solid var(--line);
+}
+.lb-field + .lb-field { margin-top: 10px; }
+.lb-field-name { color: var(--muted); }
+.lb-field-value {
+  color: var(--blue-dark);
+  font-size: 14px;
+  font-variant-numeric: tabular-nums;
+  white-space: nowrap;
+}
+
+.lb-range-line {
+  display: flex;
+  align-items: center;
+  gap: 10px;
+}
+.lb-range-line .cl-range { flex: 1 1 auto; min-width: 0; }
+
+.lb-num-input {
+  flex: none;
+  width: 84px;
+  padding: 9px 8px;
+  text-align: center;
+  font-size: 15px;
+  font-weight: 700;
+  font-variant-numeric: tabular-nums;
+  border-radius: 12px;
+}
+
+/* ---------------- 按钮行 / 快捷值 ---------------- */
+.lb-actions { gap: 8px; }
+.lb-actions .cl-btn { min-height: 40px; }
+
+.lb-quick {
+  gap: 8px;
+  align-items: center;
+}
+.lb-quick .cl-btn {
+  min-height: 40px;
+  min-width: 46px;
+  padding: 8px 12px;
+}
+.lb-quick-label {
+  font-size: 12.5px;
+  font-weight: 700;
+  color: var(--muted);
+}
+
+.lb-quickbox {
+  padding: 12px 14px;
+  border-radius: 16px;
+  background: #f7fbff;
+  border: 1px solid var(--line);
+}
+
+.lb-mini-title {
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
+  gap: 10px;
+  font-size: 12.5px;
+  font-weight: 800;
+  color: var(--muted);
+  letter-spacing: 0.2px;
+  margin-bottom: 8px;
+}
+
+/* ---------------- 小任务清单 ---------------- */
+.lb-taskbox {
+  padding: 12px 14px;
+  border-radius: 16px;
+  background: linear-gradient(170deg, #f8fbff, #eff7ff);
+  border: 1px solid var(--line);
+}
+.lb-taskbox.all-done {
+  background: linear-gradient(170deg, #f4fffb, #e8fbf3);
+  border-color: #b7efdb;
+}
+.lb-task-progress {
+  color: var(--blue);
+  font-variant-numeric: tabular-nums;
+}
+.lb-taskbox.all-done .lb-task-progress { color: var(--green-dark); }
+
+.lb-tasks {
+  list-style: none;
+  margin: 0;
+  padding: 0;
+  display: flex;
+  flex-direction: column;
+  gap: 8px;
+}
+.lb-task {
+  display: flex;
+  align-items: flex-start;
+  gap: 9px;
+  padding: 8px 10px;
+  border-radius: 12px;
+  background: #fff;
+  border: 1px solid var(--line);
+  font-size: 13px;
+  line-height: 1.55;
+  color: #3b4a63;
+  transition: background 0.2s, border-color 0.2s;
+}
+.lb-task .lb-dot {
+  flex: none;
+  width: 19px;
+  height: 19px;
+  margin-top: 1px;
+  display: grid;
+  place-items: center;
+  border-radius: 50%;
+  border: 2px solid #c7dcff;
+  background: #fff;
+  color: #fff;
+  font-size: 11px;
+  font-weight: 800;
+  line-height: 1;
+}
+.lb-task.done {
+  background: var(--green-soft);
+  border-color: #b7efdb;
+  color: var(--green-dark);
+}
+.lb-task.done .lb-dot { background: var(--green); border-color: var(--green); }
+.lb-task.done .lb-task-text { text-decoration: line-through; text-decoration-thickness: 1.5px; opacity: 0.85; }
+
+.lb-task-tip {
+  margin: 8px 2px 0;
+  font-size: 11.5px;
+  line-height: 1.6;
+  color: var(--muted);
+}
+
+/* ---------------- 画布 ---------------- */
+.lb-canvas {
+  position: relative;
+  width: 100%;
+  max-width: 460px;
+  margin: 0 auto;
+  aspect-ratio: 1 / 1;
+  border-radius: var(--radius);
+  background:
+    radial-gradient(120% 120% at 20% 0%, #ffffff 0%, #f7fbff 55%, #eef5ff 100%);
+  border: 1.5px solid var(--line-strong);
+  box-shadow: inset 0 2px 10px rgba(30, 64, 175, 0.06);
+  overflow: hidden;
+}
+.lb-canvas-draw { cursor: crosshair; touch-action: manipulation; user-select: none; -webkit-user-select: none; }
+.lb-canvas-calc { max-width: 400px; }
+.lb-canvas-sector { max-width: 430px; }
+.lb-canvas-shadow { max-width: 430px; }
+
+.lb-svg { display: block; width: 100%; height: 100%; }
+
+.lb-hint {
+  position: absolute;
+  inset: 0;
+  display: flex;
+  align-items: flex-end;
+  justify-content: center;
+  padding-bottom: 16px;
+  pointer-events: none;
+  transition: opacity 0.35s;
+}
+.lb-hint span {
+  padding: 9px 16px;
+  border-radius: 999px;
+  background: rgba(255, 255, 255, 0.94);
+  border: 1px dashed #bfdbfe;
+  color: var(--blue);
+  font-size: 12.5px;
+  font-weight: 700;
+  box-shadow: var(--shadow-sm);
+  animation: lb-hint-float 2.6s ease-in-out infinite;
+}
+.lb-hint.is-hidden { opacity: 0; visibility: hidden; }
+
+@keyframes lb-hint-float {
+  0%, 100% { transform: translateY(0); }
+  50% { transform: translateY(-4px); }
+}
+
+/* ---------------- SVG 图形样式 ---------------- */
+.lb-grid line { stroke: #e9f1fb; stroke-width: 1; }
+.lb-grid-frame { fill: none; stroke: #dbe7f8; stroke-width: 1; }
+
+.lb-svg-label {
+  font-family: var(--font);
+  font-size: 13px;
+  font-weight: 700;
+  letter-spacing: 0.2px;
+}
+.lb-svg text { paint-order: stroke; stroke: rgba(255, 255, 255, 0.92); stroke-width: 3px; stroke-linejoin: round; }
+.lb-label-r { fill: var(--blue-dark); }
+.lb-label-d { fill: var(--amber-dark); }
+.lb-label-arc { fill: #0e7490; }
+.lb-label-muted { fill: var(--soft); font-size: 11.5px; font-weight: 600; }
+
+.lb-preview-circle {
+  fill: none;
+  stroke: #93c5fd;
+  stroke-width: 2;
+  stroke-dasharray: 7 7;
+  transition: opacity 0.3s;
+}
+.lb-draw-circle {
+  fill: none;
+  stroke: var(--purple);
+  stroke-width: 3.2;
+  stroke-linecap: round;
+}
+.lb-arm { stroke: var(--blue); stroke-width: 2.6; stroke-linecap: round; opacity: 0; }
+.lb-pencil { fill: var(--blue); opacity: 0; }
+
+.lb-dim-line { stroke-width: 1.8; stroke-linecap: round; }
+.lb-dim-blue { stroke: var(--blue); }
+.lb-dim-amber { stroke: var(--amber); }
+.lb-dim-dash { stroke-dasharray: 7 6; }
+
+.lb-center-halo { fill: rgba(30, 41, 59, 0.14); }
+.lb-center-dot { fill: var(--ink); }
+
+/* 扇形 */
+.lb-ghost-circle {
+  fill: rgba(255, 255, 255, 0.5);
+  stroke: #cbd5e1;
+  stroke-width: 1.6;
+  stroke-dasharray: 6 7;
+}
+.lb-whole-circle {
+  fill: rgba(139, 92, 246, 0.14);
+  stroke: #c4b5fd;
+  stroke-width: 2;
+  stroke-dasharray: 8 7;
+}
+.lb-sector-fill { fill: url(#lb-sector-grad); }
+.lb-sector-arc {
+  fill: none;
+  stroke: #06b6d4;
+  stroke-width: 5;
+  stroke-linecap: round;
+}
+.lb-sector-edge { stroke: var(--purple); stroke-width: 2.2; }
+.lb-angle-arc {
+  fill: none;
+  stroke: var(--amber);
+  stroke-width: 2.2;
+  stroke-dasharray: 4 5;
+}
+
+/* 阴影图形 */
+.lb-shadow-fill {
+  fill: rgba(236, 72, 153, 0.52);
+  stroke: none;
+}
+.lb-cut-fill { fill: #ffffff; }
+.lb-outline-strong {
+  fill: none;
+  stroke: #334155;
+  stroke-width: 2.4;
+  stroke-linejoin: round;
+}
+
+/* ---------------- 数据卡补充色 ---------------- */
+.cl-stat.lb-purple {
+  background: linear-gradient(160deg, #fbf8ff, #f1ecff);
+  border-color: #ddd0ff;
+}
+.cl-stat.lb-purple .stat-value { color: #6d28d9; }
+.lb-stats .stat-value { font-size: clamp(16px, 1.8vw, 20px); }
+.lb-stats .stat-label { line-height: 1.4; }
+
+/* ---------------- 公式行 ---------------- */
+.lb-formula-row {
+  display: flex;
+  flex-wrap: wrap;
+  gap: 10px;
+}
+.lb-formula-row .cl-formula { font-size: 14px; padding: 7px 13px; }
+
+/* ---------------- 分步计算 ---------------- */
+.lb-sub-title { font-size: 15px; margin: 2px 0 0; }
+
+.lb-steps {
+  list-style: none;
+  margin: 8px 0 0;
+  padding: 0;
+  display: flex;
+  flex-direction: column;
+  gap: 9px;
+}
+.lb-step {
+  display: flex;
+  align-items: flex-start;
+  gap: 10px;
+  padding: 10px 13px;
+  border-radius: 14px;
+  background: linear-gradient(170deg, #f9fcff, #f2f8ff);
+  border: 1px solid var(--line);
+  font-size: 13.5px;
+  line-height: 1.8;
+  color: #3b4a63;
+}
+.lb-step-no {
+  flex: none;
+  width: 23px;
+  height: 23px;
+  margin-top: 1px;
+  display: grid;
+  place-items: center;
+  border-radius: 8px;
+  background: var(--blue-soft);
+  color: var(--blue-dark);
+  font-size: 12px;
+  font-weight: 800;
+  font-variant-numeric: tabular-nums;
+}
+.lb-step-text { min-width: 0; }
+.lb-step-text b { color: var(--green-dark); font-size: 14px; }
+.lb-step-note {
+  display: inline-block;
+  margin-top: 2px;
+  font-size: 12.5px;
+  color: var(--muted);
+}
+
+.lb-steps-head {
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
+  gap: 12px;
+  flex-wrap: wrap;
+}
+.lb-steps-head .cl-btn { min-height: 40px; }
+
+/* ---------------- 图形选择 ---------------- */
+.lb-shapes {
+  display: grid;
+  grid-template-columns: repeat(2, minmax(0, 1fr));
+  gap: 8px;
+}
+.lb-shape-btn {
+  display: flex;
+  align-items: center;
+  gap: 8px;
+  min-height: 46px;
+  padding: 10px 12px;
+  border-radius: 14px;
+  border: 1.5px solid var(--line-strong);
+  background: #fff;
+  color: #5b6b82;
+  font-size: 13px;
+  font-weight: 700;
+  text-align: left;
+  transition: border-color 0.2s, background 0.2s, color 0.2s, box-shadow 0.2s, transform 0.16s;
+}
+.lb-shape-btn:hover { transform: translateY(-1px); border-color: #bfdbfe; color: var(--blue); }
+.lb-shape-btn.active {
+  border-color: var(--blue);
+  background: var(--blue-soft);
+  color: var(--blue-dark);
+  box-shadow: 0 12px 22px -18px rgba(37, 99, 235, 0.95);
+}
+.lb-shape-icon { font-size: 18px; line-height: 1; }
+
+.lb-ctl-box { display: flex; flex-direction: column; gap: 10px; }
+
+/* ---------------- 开关按钮 ---------------- */
+.lb-toggle {
+  display: inline-flex;
+  align-items: center;
+  gap: 10px;
+  min-height: 42px;
+  padding: 8px 14px;
+  border-radius: 999px;
+  border: 1.5px solid var(--line-strong);
+  background: #fff;
+  color: var(--muted);
+  font-size: 13px;
+  font-weight: 700;
+  transition: color 0.2s, border-color 0.2s, background 0.2s;
+}
+.lb-toggle[aria-pressed="true"] {
+  color: var(--green-dark);
+  border-color: #a7ebd1;
+  background: var(--green-soft);
+}
+.lb-switch {
+  position: relative;
+  flex: none;
+  width: 34px;
+  height: 20px;
+  border-radius: 999px;
+  background: #dbe7f8;
+  transition: background 0.2s;
+}
+.lb-switch::after {
+  content: "";
+  position: absolute;
+  top: 2px;
+  left: 2px;
+  width: 16px;
+  height: 16px;
+  border-radius: 50%;
+  background: #fff;
+  box-shadow: 0 2px 5px rgba(15, 23, 42, 0.18);
+  transition: transform 0.2s;
+}
+.lb-toggle[aria-pressed="true"] .lb-switch { background: var(--green); }
+.lb-toggle[aria-pressed="true"] .lb-switch::after { transform: translateX(14px); }
+
+/* ---------------- 提示 / 脚注 ---------------- */
+.lb-note { margin: 0; }
+.lb-footnote { margin-top: 16px; }
+
+/* ---------------- 响应式 ---------------- */
+@media (max-width: 980px) {
+  .lb-body { grid-template-columns: minmax(0, 1fr); }
+  .lb-stage { order: -1; }
+  .lb-canvas { max-width: 420px; }
+}
+
+@media (max-width: 620px) {
+  .lb-tabs {
+    display: grid;
+    grid-template-columns: repeat(2, minmax(0, 1fr));
+    gap: 5px;
+    padding: 5px;
+    border-radius: 20px;
+    overflow: visible;
+  }
+  .lb-tab {
+    width: 100%;
+    min-height: 42px;
+    padding: 9px 8px;
+    border-radius: 14px;
+    font-size: 12.5px;
+    gap: 5px;
+  }
+  .lb-tab-icon { font-size: 15px; }
+  .lb-panel { padding: 14px 13px 18px; border-radius: 20px; }
+  .lb-head h3 { font-size: 16px; }
+  .lb-head-icon { width: 30px; height: 30px; font-size: 15px; border-radius: 10px; }
+  .lb-canvas { max-width: 100%; }
+  .lb-num-input { width: 76px; padding: 8px 6px; font-size: 14.5px; }
+  .lb-field { padding: 11px 12px; }
+  .lb-field-name { font-size: 11.5px; }
+  .lb-field-value { font-size: 13px; }
+  .lb-step { padding: 9px 11px; font-size: 12.5px; line-height: 1.75; }
+  .lb-step-text b { font-size: 13px; }
+  .lb-quick .cl-btn { min-width: 44px; }
+  .lb-formula-row .cl-formula { font-size: 13px; padding: 6px 11px; }
+  .lb-toast { font-size: 12.5px; }
+  .lb-stats .stat-value { font-size: 16px; }
+}
+
+@media (max-width: 400px) {
+  .lb-num-input { width: 70px; }
+  .lb-shape-btn { font-size: 12.5px; padding: 9px 10px; }
+}
