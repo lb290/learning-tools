@@ -1,0 +1,281 @@
+<!DOCTYPE html>
+<html lang="zh-CN">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>小学生时钟乐园 · 认识时针分针秒针</title>
+  <meta name="description" content="给小学生的时钟学习页面：圆盘钟表、数字钟表，学习时针、分针、秒针、指针关系、时间表示与进率换算。">
+  <link rel="icon" href="data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' viewBox='0 0 100 100'%3E%3Ccircle cx='50' cy='50' r='46' fill='%23eff6ff' stroke='%232563eb' stroke-width='6'/%3E%3Cpath d='M50 26v26l16 10' stroke='%232563eb' stroke-width='6' stroke-linecap='round' fill='none'/%3E%3C/svg%3E">
+  <link rel="stylesheet" href="css/style.css">
+</head>
+<body class="mode-live">
+
+  <!-- 顶部导航 -->
+  <header class="topbar">
+    <div class="brand">
+      <span class="logo" aria-hidden="true">🕐</span>
+      <div>
+        <h1>小学生时钟乐园</h1>
+        <p>认识时针 · 分针 · 秒针，学会看时间</p>
+      </div>
+    </div>
+    <nav class="mode-switch" role="tablist" aria-label="选择学习方式">
+      <button type="button" data-mode="live" class="active" role="tab" aria-selected="true">看现在</button>
+      <button type="button" data-mode="set" role="tab" aria-selected="false">动手拨</button>
+      <button type="button" data-mode="quiz" role="tab" aria-selected="false">闯关练习</button>
+    </nav>
+  </header>
+
+  <main>
+    <!-- 左侧：圆盘钟表 -->
+    <section class="clock-stage card" aria-labelledby="clockTitle">
+      <h2 class="sr-only" id="clockTitle">圆盘钟表</h2>
+      <div class="clock-wrap">
+        <div id="clock" class="clock"></div>
+      </div>
+      <p class="clock-hint" id="clockHint">✋ 拖动钟面上的指针，或用右侧按钮微调</p>
+      <div class="clock-toolbar">
+        <button type="button" class="switch-chip active" data-toggle="minuteNumbers" aria-pressed="true">分钟数字</button>
+        <button type="button" class="switch-chip active" data-toggle="handLabels" aria-pressed="true">指针名称</button>
+        <button type="button" class="switch-chip active" data-toggle="h24" aria-pressed="true">24 小时制</button>
+      </div>
+      <div class="legend" aria-label="指针图例">
+        <span class="legend-chip hour"><i></i>时针</span>
+        <span class="legend-chip minute"><i></i>分针</span>
+        <span class="legend-chip second"><i></i>秒针</span>
+      </div>
+    </section>
+
+    <!-- 右侧：数字钟 / 控制 / 练习 -->
+    <aside class="panel card">
+      <!-- 数字钟 + 指针解释（看现在 / 动手拨 共用） -->
+      <div class="panel-block" id="liveSetBlock">
+        <div class="digital-card">
+          <div class="digital-top">
+            <span class="led" aria-hidden="true"></span>
+            <span>数字钟</span>
+            <span class="period-badge" id="periodBadge">上午</span>
+          </div>
+          <div class="digital-digits" id="digitalDigits" aria-label="数字钟时间">
+            <span id="dHour">08</span><span class="colon">:</span><span id="dMin">00</span><span class="colon">:</span><span id="dSec">00</span>
+          </div>
+          <p class="reading" id="reading">上午 8 时整</p>
+          <p class="today" id="todayText"></p>
+        </div>
+
+        <ul class="hand-info" id="handInfo">
+          <li class="hand-info-item hour">
+            <span class="dot" aria-hidden="true"></span>
+            <div><b>时针</b><p id="hourInfo">—</p></div>
+          </li>
+          <li class="hand-info-item minute">
+            <span class="dot" aria-hidden="true"></span>
+            <div><b>分针</b><p id="minuteInfo">—</p></div>
+          </li>
+          <li class="hand-info-item second">
+            <span class="dot" aria-hidden="true"></span>
+            <div><b>秒针</b><p id="secondInfo">—</p></div>
+          </li>
+        </ul>
+      </div>
+
+      <!-- 看现在 -->
+      <div class="panel-block" id="liveActions">
+        <button type="button" class="btn btn-primary" id="gotoSet">⏸ 暂停，动手拨一拨</button>
+        <div class="mini-guide">
+          <h3>三步读懂钟面</h3>
+          <ol>
+            <li>看<span class="c-hour">时针</span>：走过几，就是几时</li>
+            <li>看<span class="c-minute">分针</span>：指向几，就用几 × 5 分</li>
+            <li>合起来：例如时针过 8、分针指 9，就是 <strong>8 时 45 分</strong></li>
+          </ol>
+        </div>
+        <p class="tip">秒针走 1 小格是 1 秒，走 1 圈就是 1 分钟，分针会跟着前进 1 小格。</p>
+      </div>
+
+      <!-- 动手拨 -->
+      <div class="panel-block" id="setControls">
+        <div>
+          <h2 class="panel-title">动手拨钟</h2>
+          <p class="panel-sub">先选一根针，再拖动钟面，或者用下面的按钮微调。</p>
+        </div>
+        <div class="hand-picker" role="group" aria-label="选择要拨的指针">
+          <button type="button" class="hand-chip hour" data-hand="hour"><i></i>时针</button>
+          <button type="button" class="hand-chip minute active" data-hand="minute"><i></i>分针</button>
+          <button type="button" class="hand-chip second" data-hand="second"><i></i>秒针</button>
+        </div>
+        <div class="fine-tune" id="fineTune" aria-label="微调指针"></div>
+        <div class="quick-actions" aria-label="快速设置">
+          <button type="button" class="btn-mini" data-quick="hour">整点</button>
+          <button type="button" class="btn-mini" data-quick="half">半点</button>
+          <button type="button" class="btn-mini" data-quick="now">现在</button>
+          <button type="button" class="btn-mini" data-quick="random">随机</button>
+        </div>
+        <div class="set-readout" id="setReadout">现在拨到：<strong>8 时整</strong></div>
+        <p class="tip" id="setTip">分针走 1 小格 = 1 分钟；分针走 1 圈 = 1 小时。</p>
+      </div>
+
+      <!-- 闯关练习 -->
+      <div class="panel-block" id="quizBlock">
+        <div class="quiz-head">
+          <div>
+            <p class="quiz-index" id="quizIndex">第 1 题 / 共 6 题</p>
+            <div class="dots" id="quizDots" aria-hidden="true"></div>
+          </div>
+          <div class="quiz-score">得分 <span class="star" aria-hidden="true">⭐</span> <span id="quizScore">0</span></div>
+        </div>
+        <div class="quiz-body" id="quizBody"></div>
+        <div class="quiz-feedback" id="quizFeedback" role="status" aria-live="polite" hidden></div>
+        <div class="quiz-actions" id="quizActions"></div>
+        <div class="quiz-help">
+          <b>闯关小助手</b>
+          <ul>
+            <li>读钟先看时针，再看分针</li>
+            <li>拨钟时，时针和分针都要拨到位</li>
+            <li>记牢进率：1 时 = 60 分，1 分 = 60 秒</li>
+          </ul>
+        </div>
+      </div>
+    </aside>
+  </main>
+
+  <!-- 底部：时钟小课堂 -->
+  <section class="learn" id="learn">
+    <div class="learn-head">
+      <div>
+        <h2>时钟小课堂</h2>
+        <p>把每一根指针都认清楚，时间就变得简单啦！</p>
+      </div>
+    </div>
+    <div class="learn-tabs" role="tablist" aria-label="学习内容">
+      <button type="button" class="learn-tab active" data-tab="hands" role="tab" aria-selected="true">① 认识三根针</button>
+      <button type="button" class="learn-tab" data-tab="relation" role="tab" aria-selected="false">② 指针的关系</button>
+      <button type="button" class="learn-tab" data-tab="convert" role="tab" aria-selected="false">③ 进率换算</button>
+      <button type="button" class="learn-tab" data-tab="readwrite" role="tab" aria-selected="false">④ 读写时间</button>
+    </div>
+    <div class="learn-panels">
+      <!-- ① 认识三根针 -->
+      <div class="learn-panel active" data-panel="hands">
+        <div class="hand-cards">
+          <article class="hand-card hour">
+            <div class="hand-card-top">
+              <span class="hand-visual hour" aria-hidden="true">
+                <svg viewBox="0 0 44 44"><line x1="22" y1="22" x2="22" y2="10" stroke-width="6"/><circle cx="22" cy="22" r="3.5"/></svg>
+              </span>
+              <h3>时针</h3>
+              <span class="tag">最短 · 最粗</span>
+            </div>
+            <p>时针走得最慢，它指到几（或刚过几），就表示<strong>几时</strong>。</p>
+            <ul>
+              <li>走 1 大格 = <strong>1 小时</strong></li>
+              <li>走 1 圈 = <strong>12 小时</strong></li>
+            </ul>
+            <button type="button" class="btn btn-ghost" data-highlight="hour">在钟上找找</button>
+          </article>
+
+          <article class="hand-card minute">
+            <div class="hand-card-top">
+              <span class="hand-visual minute" aria-hidden="true">
+                <svg viewBox="0 0 44 44"><line x1="22" y1="22" x2="22" y2="6" stroke-width="4"/><circle cx="22" cy="22" r="3.5"/></svg>
+              </span>
+              <h3>分针</h3>
+              <span class="tag">比时针长</span>
+            </div>
+            <p>分针走 1 大格是 5 分，走 1 小格是 1 分。它指着几，就用几乘 5。</p>
+            <ul>
+              <li>走 1 小格 = <strong>1 分钟</strong></li>
+              <li>走 1 圈 = <strong>60 分钟 = 1 小时</strong></li>
+            </ul>
+            <button type="button" class="btn btn-ghost" data-highlight="minute">在钟上找找</button>
+          </article>
+
+          <article class="hand-card second">
+            <div class="hand-card-top">
+              <span class="hand-visual second" aria-hidden="true">
+                <svg viewBox="0 0 44 44"><line x1="22" y1="28" x2="22" y2="4" stroke-width="2"/><circle cx="22" cy="22" r="3.5"/></svg>
+              </span>
+              <h3>秒针</h3>
+              <span class="tag">最细 · 最长 · 最快</span>
+            </div>
+            <p>秒针最细最长，跑得最快，“滴答”一下就过去了 1 秒。</p>
+            <ul>
+              <li>走 1 小格 = <strong>1 秒</strong></li>
+              <li>走 1 圈 = <strong>60 秒 = 1 分钟</strong></li>
+            </ul>
+            <button type="button" class="btn btn-ghost" data-highlight="second">在钟上找找</button>
+          </article>
+        </div>
+      </div>
+
+      <!-- ② 指针的关系 -->
+      <div class="learn-panel" data-panel="relation">
+        <div class="relation-grid">
+          <article class="relation-card">
+            <h3>秒针走 1 圈</h3>
+            <div class="relation-flow"><span>秒针 60 小格</span><b>=</b><span>60 秒</span><b>=</b><span>1 分</span></div>
+            <p>秒针转满一圈，分针正好前进 1 小格。</p>
+          </article>
+          <article class="relation-card">
+            <h3>分针走 1 圈</h3>
+            <div class="relation-flow"><span>分针 60 小格</span><b>=</b><span>60 分</span><b>=</b><span>1 时</span></div>
+            <p>分针转满一圈，时针正好前进 1 大格。</p>
+          </article>
+        </div>
+        <div class="demo-box">
+          <div class="demo-actions">
+            <button type="button" class="btn btn-primary" data-demo="second">▶ 演示：秒针走一圈</button>
+            <button type="button" class="btn btn-primary" data-demo="minute">▶ 演示：分针走一圈</button>
+          </div>
+          <p class="demo-status" id="demoStatus">点一下演示，看看指针们是怎么“手拉手”一起走的。</p>
+        </div>
+      </div>
+
+      <!-- ③ 进率换算 -->
+      <div class="learn-panel" data-panel="convert">
+        <div class="rate-cards">
+          <div class="rate-card"><strong>1 时 = 60 分</strong><span>分针走 1 圈</span></div>
+          <div class="rate-card"><strong>1 分 = 60 秒</strong><span>秒针走 1 圈</span></div>
+          <div class="rate-card"><strong>1 时 = 3600 秒</strong><span>60 × 60 = 3600</span></div>
+          <div class="rate-card"><strong>半小时 = 30 分</strong><span>分针指 6</span></div>
+          <div class="rate-card"><strong>一刻钟 = 15 分</strong><span>分针指 3</span></div>
+          <div class="rate-card"><strong>1 天 = 24 时</strong><span>时针走 2 圈</span></div>
+        </div>
+        <div class="converter">
+          <h3>进率换算器</h3>
+          <div class="converter-inputs">
+            <label>时 <input id="cvH" type="number" min="0" max="99" step="1" value="1" inputmode="numeric"></label>
+            <label>分 <input id="cvM" type="number" min="0" max="99" step="1" value="25" inputmode="numeric"></label>
+            <label>秒 <input id="cvS" type="number" min="0" max="99" step="1" value="0" inputmode="numeric"></label>
+          </div>
+          <div class="converter-result" id="cvResult">1 时 25 分 0 秒 = 85 分 = 5100 秒</div>
+          <p class="tip">改一改上面的数字，看看一共是多少分、多少秒。1 时 = 60 分，1 分 = 60 秒。</p>
+        </div>
+      </div>
+
+      <!-- ④ 读写时间 -->
+      <div class="learn-panel" data-panel="readwrite">
+        <div class="rules">
+          <h3>读钟四步口诀</h3>
+          <ol>
+            <li>先看<strong class="c-hour">时针</strong>：时针指到几，或者刚过几，就是<strong>几时</strong>。</li>
+            <li>再看<strong class="c-minute">分针</strong>：分针指 12 是<strong>整时</strong>；指 6 是 30 分，也就是<strong>半时</strong>。</li>
+            <li>分针每走 1 大格是 5 分：指 1 是 5 分，指 2 是 10 分……指 9 是 45 分。</li>
+            <li>记录时间：可以写成 <strong>8:05</strong>，也可以写成 <strong>8 时 5 分</strong>。</li>
+          </ol>
+          <p class="examples-tip">💡 点一点下面的小钟面，就能把它拨到上面的大钟表上，仔细看看三根针。</p>
+        </div>
+        <div class="examples" id="timeExamples"></div>
+      </div>
+    </div>
+  </section>
+
+  <footer class="footer">
+    <p>🕐 小学生时钟乐园 · 多看、多拨、多练，时间就会变得很简单</p>
+  </footer>
+
+  <div class="toast" id="toast" role="status" aria-live="polite"></div>
+
+  <script src="js/clock.js"></script>
+  <script src="js/app.js"></script>
+</body>
+</html>
